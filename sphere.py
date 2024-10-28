@@ -2,6 +2,7 @@ import jax
 import jax.numpy as jnp
 from manifold import Manifold
 
+
 class Sphere(Manifold):
     @classmethod
     def exp(cls, x, u):
@@ -12,7 +13,7 @@ class Sphere(Manifold):
             lambda _: jnp.cos(norm_u) * x + jnp.sin(norm_u) * u / norm_u,
             None,
         )
-    
+
     @classmethod
     def log(cls, x, y):
         delta = y - x
@@ -25,11 +26,9 @@ class Sphere(Manifold):
             None,
         )
 
-
     @classmethod
     def dist(cls, x, y):
         return jnp.arccos(jnp.dot(x, y))
-
 
     @classmethod
     def frechet_mean(cls, X, _, max_iter=10):

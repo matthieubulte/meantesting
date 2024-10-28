@@ -1,23 +1,19 @@
 from typing import Protocol
 import jax
 
+
 class Manifold(Protocol):
     @classmethod
-    def exp(cls, base_point, tangent_vector):
-        ...
+    def exp(cls, base_point, tangent_vector): ...
 
     @classmethod
-    def log(cls, base_point, target_point):
-        ...
-
+    def log(cls, base_point, target_point): ...
 
     @classmethod
-    def dist(cls, base_point, target_point):
-        ...
+    def dist(cls, base_point, target_point): ...
 
     @classmethod
-    def frechet_mean(cls, X, key, **kwargs):
-        ...
+    def frechet_mean(cls, X, key, **kwargs): ...
 
 
 def mirror_vecs(M, mu, ys):
@@ -26,4 +22,3 @@ def mirror_vecs(M, mu, ys):
 
 def geodesic(M, x, y, delta):
     return M.exp(x, delta * M.log(x, y))
-

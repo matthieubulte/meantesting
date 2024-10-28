@@ -2,15 +2,15 @@ import jax
 import jax.numpy as jnp
 from manifold import Manifold
 
+
 class BuresWasserstein(Manifold):
     @classmethod
     def exp(cls, A, B):
         return (jnp.eye(A.shape[0]) + B) @ A @ (jnp.eye(A.shape[0]) + B)
-    
+
     @classmethod
     def log(cls, A, B):
         return T(A, B) - jnp.eye(B.shape[0])
-
 
     @classmethod
     def dist(cls, A, B):
@@ -18,7 +18,9 @@ class BuresWasserstein(Manifold):
         return jnp.sqrt(jnp.trace(A + B - 2 * sqrtm(sqrt_A @ B @ sqrt_A)))
 
     @classmethod
-    def frechet_mean(cls, X, key, learning_rate=0.01, n_iterations=None, decay_rate=0.001):
+    def frechet_mean(
+        cls, X, key, learning_rate=0.01, n_iterations=None, decay_rate=0.001
+    ):
         n_iterations = n_iterations or X.shape[0]
         dim = X.shape[1]
         Id = jnp.eye(dim, dtype=X.dtype)
@@ -36,7 +38,8 @@ class BuresWasserstein(Manifold):
         (Sigma_t, _), _ = jax.lax.scan(body_fn, initial_state, jnp.arange(n_iterations))
 
         return Sigma_t
-        
+
+
 def sym(A):
     return (A + A.T) / 2
 

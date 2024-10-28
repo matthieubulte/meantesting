@@ -1,7 +1,17 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-def plot_sim_results(M, delta_n, deltas, delta_rates, delta_rates_std, local_ns, local_rates, local_rates_std):
+
+def plot_sim_results(
+    M,
+    delta_n,
+    deltas,
+    delta_rates,
+    delta_rates_std,
+    local_ns,
+    local_rates,
+    local_rates_std,
+):
     plt.figure(figsize=(12, 6))
     plt.subplot(121)
 
