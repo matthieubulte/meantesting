@@ -22,7 +22,7 @@ class Sphere(Manifold):
         return jax.lax.cond(
             proj_norm < 1e-10,
             lambda _: jnp.zeros(2),
-            lambda _: jnp.arccos(jnp.dot(x, y)) * proj / proj_norm,
+            lambda _: jnp.arccos(jnp.minimum(1.0, jnp.dot(x, y))) * proj / proj_norm,
             None,
         )
 
@@ -35,6 +35,7 @@ class Sphere(Manifold):
         def body_fn(carry, _):
             (mu,) = carry
             v_mu_new = jax.vmap(lambda x: Sphere.log(mu, x))(X).mean(axis=0)
+            v_mu_new = proj_comp(mu, v_mu_new)
             return (Sphere.exp(mu, v_mu_new),), None
 
         initial_state = (X[0],)
