@@ -20,5 +20,9 @@ def mirror_vecs(M, mu, ys):
     return jax.vmap(lambda y: M.exp(mu, -M.log(mu, y)))(ys)
 
 
+def dist_sq_arr(M, x, ys):
+    return jax.vmap(lambda y: M.dist(x, y) ** 2)(ys)
+
+
 def geodesic(M, x, y, delta):
     return M.exp(x, delta * M.log(x, y))
