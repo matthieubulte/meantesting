@@ -2,6 +2,72 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
+def plot_sizes(prefix, mc_repeats, out=None):
+    plt.figure(figsize=(6, 6))
+    deltas = np.load(f"{prefix}_deltas.npy")
+    styles = ["-.", "--", "-"]
+    for i, n in enumerate([100, 200, 400]):
+        delta_rates = np.load(f"{prefix}_delta_rates_{n}.npy")
+        delta_rates_std = np.load(f"{prefix}_delta_rates_std_{n}.npy")
+        plt.plot(deltas, delta_rates, styles[i], linewidth=2, color="black")
+        plt.fill_between(
+            deltas,
+            delta_rates - (delta_rates_std * 2.56 / np.sqrt(mc_repeats)),
+            delta_rates + (delta_rates_std * 2.56 / np.sqrt(mc_repeats)),
+            alpha=0.2,
+            color="grey",
+            label="95% CI",
+        )
+
+    plt.gca().spines["top"].set_visible(False)
+    plt.gca().spines["right"].set_visible(False)
+
+    plt.axhline(0.05, linestyle="--", color="black")
+    plt.yticks(np.linspace(0, 1, 11))
+    plt.ylim(0, 0.999)
+    plt.xlim(deltas[0], deltas[-1])
+    plt.xlabel(r"$\delta$")
+    plt.ylabel(f"Rejection rate")
+    plt.grid("on")
+
+    if out:
+        plt.savefig(
+            out,
+            bbox_inches="tight",
+            transparent=True,
+        )
+
+
+def plot_size(
+    M,
+    deltas,
+    delta_rates,
+    delta_rates_std,
+):
+    plt.figure(figsize=(6, 6))
+
+    plt.plot(deltas, delta_rates, "-", linewidth=3, color="black")
+    plt.fill_between(
+        deltas,
+        delta_rates - (delta_rates_std * 2.56 / np.sqrt(M)),
+        delta_rates + (delta_rates_std * 2.56 / np.sqrt(M)),
+        alpha=0.2,
+        color="grey",
+        label="95% CI",
+    )
+
+    plt.gca().spines["top"].set_visible(False)
+    plt.gca().spines["right"].set_visible(False)
+
+    plt.axhline(0.05, linestyle="--", color="black")
+    plt.yticks(np.linspace(0, 1, 11))
+    plt.ylim(0, 0.999)
+    plt.xlim(deltas[0], deltas[-1])
+    plt.xlabel(r"$\delta$")
+    plt.ylabel(f"Rejection rate")
+    plt.grid("on")
+
+
 def plot_sim_results(
     M,
     delta_n,
