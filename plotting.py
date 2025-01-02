@@ -38,6 +38,40 @@ def plot_sizes(prefix, mc_repeats, out=None):
         )
 
 
+def plot_power(prefix, mc_repeats, out=None):
+    plt.figure(figsize=(6, 6))
+    ns = np.load(f"{prefix}_ns.npy")
+
+    local_power = np.load(f"{prefix}_local_power.npy")
+    local_power_std = np.load(f"{prefix}_local_power_std.npy")
+
+    plt.plot(ns, local_power, linewidth=2, color="black")
+    plt.fill_between(
+        ns,
+        local_power - (local_power_std * 1.96 / np.sqrt(mc_repeats)),
+        local_power + (local_power_std * 1.96 / np.sqrt(mc_repeats)),
+        alpha=0.2,
+        color="grey",
+    )
+
+    plt.gca().spines["top"].set_visible(False)
+    plt.gca().spines["right"].set_visible(False)
+
+    plt.yticks(np.linspace(0, 1, 11))
+    plt.ylim(0, 0.999)
+    plt.xlim(ns[0], ns[-1])
+    plt.xlabel(r"$n$")
+    plt.ylabel(f"Rejection rate")
+    plt.grid("on")
+
+    if out:
+        plt.savefig(
+            out,
+            bbox_inches="tight",
+            transparent=True,
+        )
+
+
 def plot_size(
     M,
     deltas,
