@@ -12,8 +12,8 @@ def plot_sizes(prefix, mc_repeats, out=None):
         plt.plot(deltas, delta_rates, styles[i], linewidth=2, color="black")
         plt.fill_between(
             deltas,
-            delta_rates - (delta_rates_std * 2.56 / np.sqrt(mc_repeats)),
-            delta_rates + (delta_rates_std * 2.56 / np.sqrt(mc_repeats)),
+            delta_rates - (delta_rates_std * 1.96 / np.sqrt(mc_repeats)),
+            delta_rates + (delta_rates_std * 1.96 / np.sqrt(mc_repeats)),
             alpha=0.2,
             color="grey",
             label="95% CI",
