@@ -2,11 +2,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-def plot_sizes(prefix, mc_repeats, out=None):
+def plot_sizes(prefix, mc_repeats, out=None, ns=[100, 200, 400]):
     plt.figure(figsize=(6, 6))
     deltas = np.load(f"{prefix}_deltas.npy")
     styles = ["-.", "--", "-"]
-    for i, n in enumerate([100, 200, 400]):
+    for i, n in enumerate(ns):
         delta_rates = np.load(f"{prefix}_delta_rates_{n}.npy")
         delta_rates_std = np.load(f"{prefix}_delta_rates_std_{n}.npy")
         plt.plot(deltas, delta_rates, styles[i], linewidth=2, color="black")
